@@ -5,15 +5,15 @@ import { makeStyles } from "@material-ui/core/styles";
 import Modal from "@material-ui/core/Modal";
 import { useLocation, useHistory } from "react-router-dom";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   modal: {
     display: "flex",
     alignItems: "center",
-    justifyContent: "center"
-  }
+    justifyContent: "center",
+  },
 }));
 
-const index = props => {
+const index = (props) => {
   const classes = useStyles();
   const [tab1, setTab1] = React.useState(false);
   const [tab2, setTab2] = React.useState(false);
@@ -46,14 +46,14 @@ const index = props => {
         paddingTop: 10,
         paddingLeft: 20,
         paddingRight: 20,
-        overflow: "hidden"
+        overflow: "hidden",
       }}
     >
       <div style={{ display: "flex" }}>
         <Paper
           square
           onClick={() => {
-            history.push("/home/workperiod");
+            history.push("/workperiod/list-file");
           }}
           onMouseEnter={() => {
             setTab1(true);
@@ -69,7 +69,7 @@ const index = props => {
             cursor: "pointer",
             height: 160,
             textAlign: "center",
-            paddingTop: 20
+            paddingTop: 20,
           }}
         >
           <img
@@ -83,10 +83,7 @@ const index = props => {
         <Paper
           square
           onClick={() => {
-             history.push("/home/pos")
-            // props.WorkPeriod.isStarted
-            //   ? history.push("/home/pos")
-            //   : handleOpen();
+            props.WorkPeriod.isStarted ? history.push("/pos") : handleOpen();
           }}
           onMouseEnter={() => {
             setTab2(true);
@@ -103,21 +100,37 @@ const index = props => {
             height: 160,
             textAlign: "center",
             paddingTop: 20,
-            marginLeft: 15
+            marginLeft: 15,
           }}
         >
           <img
-            src={"./assets/icons/cash_register.png"}
+            src={
+              props.WorkPeriod.isStarted
+                ? "./assets/icons/icons8_cash_register_128px_1.png"
+                : props.Theme.theme === "light"
+                ? "./assets/icons/icons8_cash_register_128px_3.png"
+                : "./assets/icons/icons8_cash_register_128px_4.png"
+            }
             style={{ width: 80, height: 80, margin: "auto" }}
           />
-          <Typography style={{ color: "#fff", marginTop: 3 }} variant="h4">
+          <Typography
+            style={{
+              color: props.WorkPeriod.isStarted
+                ? "#fff"
+                : props.Theme.theme === "light"
+                ? "#0082A4"
+                : "#000",
+              marginTop: 3,
+            }}
+            variant="h4"
+          >
             POS
           </Typography>
         </Paper>
         <Paper
           square
           onClick={() => {
-            history.push("/home/tickets");
+            history.push("/tickets");
           }}
           onMouseEnter={() => {
             setTab3(true);
@@ -132,9 +145,9 @@ const index = props => {
             width: 430,
             cursor: "pointer",
             height: 160,
-            textAlign: "center", 
+            textAlign: "center",
             paddingTop: 20,
-            marginLeft: 15
+            marginLeft: 15,
           }}
         >
           <img
@@ -151,7 +164,7 @@ const index = props => {
         <Paper
           square
           onClick={() => {
-            history.push("/home/accounts");
+            history.push("/accounts");
           }}
           onMouseEnter={() => {
             setTab4(true);
@@ -167,7 +180,7 @@ const index = props => {
             cursor: "pointer",
             height: 160,
             textAlign: "center",
-            paddingTop: 20
+            paddingTop: 20,
           }}
         >
           <img
@@ -180,7 +193,7 @@ const index = props => {
         </Paper>
         <Paper
           onClick={() => {
-            history.push("/home/warehouses");
+            history.push("/warehouses");
           }}
           square
           onMouseEnter={() => {
@@ -198,7 +211,7 @@ const index = props => {
             height: 160,
             textAlign: "center",
             paddingTop: 20,
-            marginLeft: 15
+            marginLeft: 15,
           }}
         >
           <img
@@ -212,7 +225,7 @@ const index = props => {
         <Paper
           square
           onClick={() => {
-            history.push("/home/departments");
+            history.push("/departments");
           }}
           onMouseEnter={() => {
             setTab6(true);
@@ -229,7 +242,7 @@ const index = props => {
             height: 160,
             textAlign: "center",
             paddingTop: 20,
-            marginLeft: 15
+            marginLeft: 15,
           }}
         >
           <img
@@ -246,7 +259,7 @@ const index = props => {
         <Paper
           square
           onClick={() => {
-            history.push("/home/reports");
+            history.push("/reports");
           }}
           onMouseEnter={() => {
             setTab7(true);
@@ -262,7 +275,7 @@ const index = props => {
             cursor: "pointer",
             height: 160,
             textAlign: "center",
-            paddingTop: 20
+            paddingTop: 20,
           }}
         >
           <img
@@ -275,7 +288,7 @@ const index = props => {
         </Paper>
         <Paper
           onClick={() => {
-            history.push("/home/stores");
+            history.push("/settings");
           }}
           square
           onMouseEnter={() => {
@@ -293,7 +306,7 @@ const index = props => {
             height: 160,
             textAlign: "center",
             paddingTop: 20,
-            marginLeft: 15
+            marginLeft: 15,
           }}
         >
           <img
@@ -307,7 +320,12 @@ const index = props => {
         <Paper
           square
           onClick={() => {
-            history.push("/home/reports");
+            props.dispatchEvent({
+              type: "LOGOUT",
+            });
+            setTimeout(() => {
+              history.push("/");
+            }, 400);
           }}
           onMouseEnter={() => {
             setTab9(true);
@@ -324,7 +342,7 @@ const index = props => {
             height: 160,
             textAlign: "center",
             paddingTop: 20,
-            marginLeft: 15
+            marginLeft: 15,
           }}
         >
           <img
@@ -336,14 +354,14 @@ const index = props => {
           </Typography>
         </Paper>
       </div>
-
+      {/* Work Period Modal */}
       <div>
         <Modal
           aria-labelledby="simple-modal-title"
           aria-describedby="simple-modal-description"
           open={open}
           className={classes.modal}
-          onClose={handleClose}
+          // onClose={handleClose}
         >
           <Paper style={{ padding: 20 }}>
             <div>
@@ -368,13 +386,14 @@ const index = props => {
 
 function mapStateToProps(state) {
   return {
-    Theme: state.Theme
+    Theme: state.Theme,
+    WorkPeriod: state.WorkPeriod,
   };
 }
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
-    dispatchEvent: data => dispatch(data)
+    dispatchEvent: (data) => dispatch(data),
   };
 };
 

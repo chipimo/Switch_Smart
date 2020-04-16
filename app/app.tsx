@@ -18,7 +18,11 @@ import Tickets from "./screens/Tickets";
 import Accouts from "./screens/Accouts";
 import AccountDetails from "./screens/Accouts/AccountDetails";
 import Warehouses from "./screens/Warehouses";
-import { DepartmentView } from "./screens/Departments/DepartmentView";
+import DepartmentView from "./screens/Departments/DepartmentView";
+import Reports from "./screens/Reports";
+import Settings from "./screens/Settings";
+import NewWorkPeriod from "./screens/WorkPeriod/NewWorkPeriod";
+import appDb from "./redux/dataBase";
 
 const socketIOClient = require("socket.io-client");
 const moment = require("moment");
@@ -35,37 +39,37 @@ var year = check.format("YYYY");
 // Theme layout
 const darkTheme = createMuiTheme({
   palette: {
-    type: "dark"
-  }
+    type: "dark",
+  },
 });
 
 const lightTheme = createMuiTheme({
   palette: {
-    type: "light"
-  }
+    type: "light",
+  },
 });
 
 // Tool tip
-const HtmlTooltip = withStyles(theme => ({
+const HtmlTooltip = withStyles((theme) => ({
   tooltip: {
     backgroundColor: "#f5f5f9",
     color: "rgba(0, 0, 0, 0.87)",
     maxWidth: 220,
     fontSize: theme.typography.pxToRem(12),
-    border: "1px solid #dadde9"
-  }
+    border: "1px solid #dadde9",
+  },
 }))(Tooltip);
 
-const Accapp = props => {
+const Accapp = (props) => {
   const [conn, setConn] = React.useState({ Connected: false });
   const [iSConnecting, setiSConnecting] = React.useState(true);
 
   const history = useHistory();
 
   React.useEffect(() => {
-    initiSocket();
-
-    setTimeout(() => {}, 100);
+    setTimeout(() => {
+      initiSocket();
+    }, 3000);
   }, []);
 
   const initiSocket = () => {
@@ -98,7 +102,7 @@ const Accapp = props => {
               width: "100%",
               paddingLeft: 10,
               display: "flex",
-              justifyContent: "space-between"
+              justifyContent: "space-between",
             }}
           >
             <div style={{ display: "flex", marginTop: 10 }}>
@@ -146,28 +150,21 @@ const Accapp = props => {
         <Paper
           style={{
             width: "100%",
-            height: "85vh"
+            height: "85vh",
           }}
         >
-          <Route
-            // path="/"
-            path="/login"
-            exact
-            component={LoginPage}
-          />
-          <Route
-            // path="/home/selection"
-            path="/"
-            exact
-            component={SelectionPan}
-          />
-          <Route path="/home/workperiod" component={WorkPeriod} />
-          <Route path="/home/pos" component={Pos} />
-          <Route path="/home/tickets" component={Tickets} />
-          <Route path="/home/accounts" component={Accouts} />
-          <Route path="/home/accounts_details" component={AccountDetails} />
-          <Route path="/home/warehouses" component={Warehouses} />
-          <Route path="/home/departments" component={DepartmentView} />
+          <Route path="/" exact component={LoginPage} />
+          <Route path="/home" component={SelectionPan} />
+          <Route path="/workperiod/list-file" component={WorkPeriod} />
+          <Route path="/workperiod/new-file" component={NewWorkPeriod} />
+          <Route path="/pos" component={Pos} />
+          <Route path="/tickets" component={Tickets} />
+          <Route path="/accounts" component={Accouts} />
+          <Route path="/accounts_details" component={AccountDetails} />
+          <Route path="/warehouses" component={Warehouses} />
+          <Route path="/departments" component={DepartmentView} />
+          <Route path="/reports" component={Reports} />
+          <Route path="/settings" component={Settings} />
         </Paper>
         {/* Footer */}
         <AppBar
@@ -177,7 +174,7 @@ const Accapp = props => {
             borderWidth: 1,
             borderColor: "transparent",
             borderTopColor:
-              props.Theme.theme === "light" ? "#C6C6C6" : "transparent"
+              props.Theme.theme === "light" ? "#C6C6C6" : "transparent",
           }}
           position="static"
           color="default"
@@ -187,14 +184,16 @@ const Accapp = props => {
               marginTop: 10,
               marginRight: 15,
               display: "flex",
-              justifyContent: "space-between"
+              justifyContent: "space-between",
             }}
           >
-            <div style={{ marginLeft: 20 }}>
+            <div style={{ marginLeft: 20, display: "flex" }}>
               {iSConnecting ? (
-                <div style={{ marginTop: 5, display: "flex" }}>
+                <div style={{ marginTop: 6, display: "flex" }}>
                   <Icon name="refresh" loading />
-                  <Typography style={{ marginTop: -4 }}>Connecting</Typography>
+                  <Typography style={{ marginTop: -4 }}>
+                    Connecting...
+                  </Typography>
                 </div>
               ) : (
                 <div>
@@ -215,50 +214,78 @@ const Accapp = props => {
                   )}
                 </div>
               )}
+              {props.Dep.dep ? (
+                <div style={{ display: "flex", marginLeft: 10, marginTop: 5 }}>
+                  <Icon name="building" />
+                  <Typography>{props.Dep.dep}</Typography>
+                </div>
+              ) : null}
             </div>
 
             <div style={{ display: "flex" }}>
-              <div style={{ marginTop: 3, marginRight: 10 }}>
-                <Typography>Melvin Chipimo</Typography>
-              </div>
+              {props.User.isLoggedIn ? (
+                <div style={{ display: "flex" }}>
+                  <div style={{ marginTop: 3, marginRight: 10 }}>
+                    <Typography>{props.User.userLogged.userName}</Typography>
+                  </div>
+                  <div style={{ marginTop: -3, marginRight: 10 }}>
+                    <IconButton
+                      style={{ height: 40, width: 40, marginTop: -3 }}
+                    >
+                      <Icon style={{ marginTop: -5 }} name="users" />
+                    </IconButton>
+                  </div>
+                  {/* Menu Button */}
+                  <div style={{ marginRight: 10 }}>
+                    <Button
+                      onClick={() => {
+                        history.push("/home");
+                      }}
+                    >
+                      <Typography>Main Menu</Typography>
+                    </Button>
+                  </div>
+                </div>
+              ) : null}
 
-              {/* Menu Button */}
-              <div style={{ marginRight: 10 }}>
-                <Button
-                  onClick={() => {
-                    history.push("/");
-                  }}
-                >
-                  <Typography>Main Menu</Typography>
-                </Button>
-              </div>
+              {/* To remove ONLY FOR DEVELOPMENT */}
+              <Button
+                onClick={() => {
+                  history.push("/home");
+                }}
+              >
+                <Typography>Main Menu</Typography>
+              </Button>
+
               <div>
-                <HtmlTooltip
-                  title={
-                    <React.Fragment>
-                      <Typography color="inherit">
-                        Change Theme Color
-                      </Typography>
-                      {`default theme:${props.Theme.theme}`}
-                    </React.Fragment>
-                  }
-                >
-                  <IconButton
-                    style={{
-                      width: 30,
-                      height: 30,
-                      backgroundColor:
-                        props.Theme.theme === "light" ? "#212121" : "#ccc"
-                    }}
-                    onClick={() => {
-                      props.dispatchEvent({
-                        type: "setTheme",
-                        setTheme:
-                          props.Theme.theme === "light" ? "dark" : "light"
-                      });
-                    }}
-                  />
-                </HtmlTooltip>
+                <div style={{ display: "flex" }}>
+                  <HtmlTooltip
+                    title={
+                      <React.Fragment>
+                        <Typography color="inherit">
+                          Change Theme Color
+                        </Typography>
+                        {`default theme:${props.Theme.theme}`}
+                      </React.Fragment>
+                    }
+                  >
+                    <IconButton
+                      style={{
+                        width: 30,
+                        height: 30,
+                        backgroundColor:
+                          props.Theme.theme === "light" ? "#212121" : "#ccc",
+                      }}
+                      onClick={() => {
+                        props.dispatchEvent({
+                          type: "setTheme",
+                          setTheme:
+                            props.Theme.theme === "light" ? "dark" : "light",
+                        });
+                      }}
+                    />
+                  </HtmlTooltip>
+                </div>
               </div>
             </div>
           </div>
@@ -272,13 +299,16 @@ function mapStateToProps(state) {
   return {
     NetiveNotify: state.NetiveNotify,
     Theme: state.Theme,
-    SocketConn: state.SocketConn
+    SocketConn: state.SocketConn,
+    User: state.User,
+    Dep: state.Dep,
+    WorkPeriod: state.WorkPeriod,
   };
 }
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
-    dispatchEvent: data => dispatch(data)
+    dispatchEvent: (data) => dispatch(data),
   };
 };
 

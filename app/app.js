@@ -31,6 +31,9 @@ var Accouts_1 = require("./screens/Accouts");
 var AccountDetails_1 = require("./screens/Accouts/AccountDetails");
 var Warehouses_1 = require("./screens/Warehouses");
 var DepartmentView_1 = require("./screens/Departments/DepartmentView");
+var Reports_1 = require("./screens/Reports");
+var Settings_1 = require("./screens/Settings");
+var NewWorkPeriod_1 = require("./screens/WorkPeriod/NewWorkPeriod");
 var socketIOClient = require("socket.io-client");
 var moment = require("moment");
 var socketUrl = "http://localhost:3200";
@@ -43,13 +46,13 @@ var year = check.format("YYYY");
 // Theme layout
 var darkTheme = styles_1.createMuiTheme({
     palette: {
-        type: "dark"
-    }
+        type: "dark",
+    },
 });
 var lightTheme = styles_1.createMuiTheme({
     palette: {
-        type: "light"
-    }
+        type: "light",
+    },
 });
 // Tool tip
 var HtmlTooltip = styles_2.withStyles(function (theme) { return ({
@@ -58,16 +61,17 @@ var HtmlTooltip = styles_2.withStyles(function (theme) { return ({
         color: "rgba(0, 0, 0, 0.87)",
         maxWidth: 220,
         fontSize: theme.typography.pxToRem(12),
-        border: "1px solid #dadde9"
-    }
+        border: "1px solid #dadde9",
+    },
 }); })(Tooltip_1.default);
 var Accapp = function (props) {
     var _a = React.useState({ Connected: false }), conn = _a[0], setConn = _a[1];
     var _b = React.useState(true), iSConnecting = _b[0], setiSConnecting = _b[1];
     var history = react_router_dom_1.useHistory();
     React.useEffect(function () {
-        initiSocket();
-        setTimeout(function () { }, 100);
+        setTimeout(function () {
+            initiSocket();
+        }, 3000);
     }, []);
     var initiSocket = function () {
         setConn(__assign({}, conn, { Connected: false }));
@@ -90,7 +94,7 @@ var Accapp = function (props) {
                         width: "100%",
                         paddingLeft: 10,
                         display: "flex",
-                        justifyContent: "space-between"
+                        justifyContent: "space-between",
                     } },
                     React.createElement("div", { style: { display: "flex", marginTop: 10 } },
                         React.createElement("div", null,
@@ -116,77 +120,88 @@ var Accapp = function (props) {
                                     React.createElement(grommet_1.Clock, { style: { color: "#888080" }, type: "digital" }))))))),
             React.createElement(core_1.Paper, { style: {
                     width: "100%",
-                    height: "85vh"
+                    height: "85vh",
                 } },
-                React.createElement(react_router_dom_1.Route
-                // path="/"
-                , { 
-                    // path="/"
-                    path: "/login", exact: true, component: LoginPage_1.default }),
-                React.createElement(react_router_dom_1.Route
-                // path="/home/selection"
-                , { 
-                    // path="/home/selection"
-                    path: "/", exact: true, component: SelectionPan_1.default }),
-                React.createElement(react_router_dom_1.Route, { path: "/home/workperiod", component: WorkPeriod_1.default }),
-                React.createElement(react_router_dom_1.Route, { path: "/home/pos", component: Pos_1.default }),
-                React.createElement(react_router_dom_1.Route, { path: "/home/tickets", component: Tickets_1.default }),
-                React.createElement(react_router_dom_1.Route, { path: "/home/accounts", component: Accouts_1.default }),
-                React.createElement(react_router_dom_1.Route, { path: "/home/accounts_details", component: AccountDetails_1.default }),
-                React.createElement(react_router_dom_1.Route, { path: "/home/warehouses", component: Warehouses_1.default }),
-                React.createElement(react_router_dom_1.Route, { path: "/home/departments", component: DepartmentView_1.DepartmentView })),
+                React.createElement(react_router_dom_1.Route, { path: "/", exact: true, component: LoginPage_1.default }),
+                React.createElement(react_router_dom_1.Route, { path: "/home", component: SelectionPan_1.default }),
+                React.createElement(react_router_dom_1.Route, { path: "/workperiod/list-file", component: WorkPeriod_1.default }),
+                React.createElement(react_router_dom_1.Route, { path: "/workperiod/new-file", component: NewWorkPeriod_1.default }),
+                React.createElement(react_router_dom_1.Route, { path: "/pos", component: Pos_1.default }),
+                React.createElement(react_router_dom_1.Route, { path: "/tickets", component: Tickets_1.default }),
+                React.createElement(react_router_dom_1.Route, { path: "/accounts", component: Accouts_1.default }),
+                React.createElement(react_router_dom_1.Route, { path: "/accounts_details", component: AccountDetails_1.default }),
+                React.createElement(react_router_dom_1.Route, { path: "/warehouses", component: Warehouses_1.default }),
+                React.createElement(react_router_dom_1.Route, { path: "/departments", component: DepartmentView_1.default }),
+                React.createElement(react_router_dom_1.Route, { path: "/reports", component: Reports_1.default }),
+                React.createElement(react_router_dom_1.Route, { path: "/settings", component: Settings_1.default })),
             React.createElement(AppBar_1.default, { style: {
                     borderStyle: "solid",
                     height: 50,
                     borderWidth: 1,
                     borderColor: "transparent",
-                    borderTopColor: props.Theme.theme === "light" ? "#C6C6C6" : "transparent"
+                    borderTopColor: props.Theme.theme === "light" ? "#C6C6C6" : "transparent",
                 }, position: "static", color: "default" },
                 React.createElement("div", { style: {
                         marginTop: 10,
                         marginRight: 15,
                         display: "flex",
-                        justifyContent: "space-between"
+                        justifyContent: "space-between",
                     } },
-                    React.createElement("div", { style: { marginLeft: 20 } }, iSConnecting ? (React.createElement("div", { style: { marginTop: 5, display: "flex" } },
-                        React.createElement(semantic_ui_react_1.Icon, { name: "refresh", loading: true }),
-                        React.createElement(core_1.Typography, { style: { marginTop: -4 } }, "Connecting"))) : (React.createElement("div", null, props.SocketConn.isConn ? (React.createElement("div", { style: { marginTop: 5, display: "flex" } },
-                        React.createElement(semantic_ui_react_1.Icon, { name: "server", color: "green" }),
-                        React.createElement(core_1.Typography, { style: { marginTop: -1 } }, "Connected*"))) : (React.createElement("div", { style: { marginTop: 5, display: "flex" } },
-                        React.createElement(semantic_ui_react_1.Icon, { name: "server" }),
-                        React.createElement(core_1.Typography, { style: { marginTop: -1 } }, "Connection Failed")))))),
+                    React.createElement("div", { style: { marginLeft: 20, display: "flex" } },
+                        iSConnecting ? (React.createElement("div", { style: { marginTop: 6, display: "flex" } },
+                            React.createElement(semantic_ui_react_1.Icon, { name: "refresh", loading: true }),
+                            React.createElement(core_1.Typography, { style: { marginTop: -4 } }, "Connecting..."))) : (React.createElement("div", null, props.SocketConn.isConn ? (React.createElement("div", { style: { marginTop: 5, display: "flex" } },
+                            React.createElement(semantic_ui_react_1.Icon, { name: "server", color: "green" }),
+                            React.createElement(core_1.Typography, { style: { marginTop: -1 } }, "Connected*"))) : (React.createElement("div", { style: { marginTop: 5, display: "flex" } },
+                            React.createElement(semantic_ui_react_1.Icon, { name: "server" }),
+                            React.createElement(core_1.Typography, { style: { marginTop: -1 } }, "Connection Failed"))))),
+                        props.Dep.dep ? (React.createElement("div", { style: { display: "flex", marginLeft: 10, marginTop: 5 } },
+                            React.createElement(semantic_ui_react_1.Icon, { name: "building" }),
+                            React.createElement(core_1.Typography, null, props.Dep.dep))) : null),
                     React.createElement("div", { style: { display: "flex" } },
-                        React.createElement("div", { style: { marginTop: 3, marginRight: 10 } },
-                            React.createElement(core_1.Typography, null, "Melvin Chipimo")),
-                        React.createElement("div", { style: { marginRight: 10 } },
-                            React.createElement(core_2.Button, { onClick: function () {
-                                    history.push("/");
-                                } },
-                                React.createElement(core_1.Typography, null, "Main Menu"))),
+                        props.User.isLoggedIn ? (React.createElement("div", { style: { display: "flex" } },
+                            React.createElement("div", { style: { marginTop: 3, marginRight: 10 } },
+                                React.createElement(core_1.Typography, null, props.User.userLogged.userName)),
+                            React.createElement("div", { style: { marginTop: -3, marginRight: 10 } },
+                                React.createElement(core_1.IconButton, { style: { height: 40, width: 40, marginTop: -3 } },
+                                    React.createElement(semantic_ui_react_1.Icon, { style: { marginTop: -5 }, name: "users" }))),
+                            React.createElement("div", { style: { marginRight: 10 } },
+                                React.createElement(core_2.Button, { onClick: function () {
+                                        history.push("/home");
+                                    } },
+                                    React.createElement(core_1.Typography, null, "Main Menu"))))) : null,
+                        React.createElement(core_2.Button, { onClick: function () {
+                                history.push("/home");
+                            } },
+                            React.createElement(core_1.Typography, null, "Main Menu")),
                         React.createElement("div", null,
-                            React.createElement(HtmlTooltip, { title: React.createElement(React.Fragment, null,
-                                    React.createElement(core_1.Typography, { color: "inherit" }, "Change Theme Color"), "default theme:" + props.Theme.theme) },
-                                React.createElement(core_1.IconButton, { style: {
-                                        width: 30,
-                                        height: 30,
-                                        backgroundColor: props.Theme.theme === "light" ? "#212121" : "#ccc"
-                                    }, onClick: function () {
-                                        props.dispatchEvent({
-                                            type: "setTheme",
-                                            setTheme: props.Theme.theme === "light" ? "dark" : "light"
-                                        });
-                                    } })))))))));
+                            React.createElement("div", { style: { display: "flex" } },
+                                React.createElement(HtmlTooltip, { title: React.createElement(React.Fragment, null,
+                                        React.createElement(core_1.Typography, { color: "inherit" }, "Change Theme Color"), "default theme:" + props.Theme.theme) },
+                                    React.createElement(core_1.IconButton, { style: {
+                                            width: 30,
+                                            height: 30,
+                                            backgroundColor: props.Theme.theme === "light" ? "#212121" : "#ccc",
+                                        }, onClick: function () {
+                                            props.dispatchEvent({
+                                                type: "setTheme",
+                                                setTheme: props.Theme.theme === "light" ? "dark" : "light",
+                                            });
+                                        } }))))))))));
 };
 function mapStateToProps(state) {
     return {
         NetiveNotify: state.NetiveNotify,
         Theme: state.Theme,
-        SocketConn: state.SocketConn
+        SocketConn: state.SocketConn,
+        User: state.User,
+        Dep: state.Dep,
+        WorkPeriod: state.WorkPeriod,
     };
 }
 var mapDispatchToProps = function (dispatch) {
     return {
-        dispatchEvent: function (data) { return dispatch(data); }
+        dispatchEvent: function (data) { return dispatch(data); },
     };
 };
 exports.default = react_redux_1.connect(mapStateToProps, mapDispatchToProps)(Accapp);

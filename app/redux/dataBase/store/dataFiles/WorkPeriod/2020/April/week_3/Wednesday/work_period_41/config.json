@@ -1,0 +1,25 @@
+{
+  "data": [
+    {
+      "id": "0bebce5d-a0c4-4c94-a9b1-32ac95414d5e",
+      "dateStarted": "04/15/2020",
+      "dateStartedString": "Wednesday, April 15, 2020 9:40 AM",
+      "dateEnded": "04/15/2020",
+      "dateEndedString": "Wednesday, April 15, 2020 9:40 AM",
+      "time": "9:40 AM",
+      "timeEnded": "9:40 AM",
+      "fileName": "work_period_41",
+      "date": "2020-04-15T09:40:02+02:00",
+      "note": "",
+      "ticketsId": [],
+      "department": null,
+      "departmentInfo": {},
+      "workedFor": "  0 minutes",
+      "count": 41,
+      "year": "2020",
+      "month": "April",
+      "week": "week_3",
+      "day": "Wednesday"
+    }
+  ]
+}

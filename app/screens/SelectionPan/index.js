@@ -10,8 +10,8 @@ var useStyles = styles_1.makeStyles(function (theme) { return ({
     modal: {
         display: "flex",
         alignItems: "center",
-        justifyContent: "center"
-    }
+        justifyContent: "center",
+    },
 }); });
 var index = function (props) {
     var classes = useStyles();
@@ -39,11 +39,11 @@ var index = function (props) {
             paddingTop: 10,
             paddingLeft: 20,
             paddingRight: 20,
-            overflow: "hidden"
+            overflow: "hidden",
         } },
         React.createElement("div", { style: { display: "flex" } },
             React.createElement(core_1.Paper, { square: true, onClick: function () {
-                    history.push("/home/workperiod");
+                    history.push("/workperiod/list-file");
                 }, onMouseEnter: function () {
                     setTab1(true);
                 }, onMouseLeave: function () {
@@ -54,15 +54,12 @@ var index = function (props) {
                     cursor: "pointer",
                     height: 160,
                     textAlign: "center",
-                    paddingTop: 20
+                    paddingTop: 20,
                 } },
                 React.createElement("img", { src: "./assets/icons/timetable.png", style: { width: 60, height: 60, margin: "auto" } }),
                 React.createElement(core_1.Typography, { style: { color: "#fff", marginTop: 13 }, variant: "h4" }, "Work Periods")),
             React.createElement(core_1.Paper, { square: true, onClick: function () {
-                    history.push("/home/pos");
-                    // props.WorkPeriod.isStarted
-                    //   ? history.push("/home/pos")
-                    //   : handleOpen();
+                    props.WorkPeriod.isStarted ? history.push("/pos") : handleOpen();
                 }, onMouseEnter: function () {
                     setTab2(true);
                 }, onMouseLeave: function () {
@@ -74,12 +71,23 @@ var index = function (props) {
                     height: 160,
                     textAlign: "center",
                     paddingTop: 20,
-                    marginLeft: 15
+                    marginLeft: 15,
                 } },
-                React.createElement("img", { src: "./assets/icons/cash_register.png", style: { width: 80, height: 80, margin: "auto" } }),
-                React.createElement(core_1.Typography, { style: { color: "#fff", marginTop: 3 }, variant: "h4" }, "POS")),
+                React.createElement("img", { src: props.WorkPeriod.isStarted
+                        ? "./assets/icons/icons8_cash_register_128px_1.png"
+                        : props.Theme.theme === "light"
+                            ? "./assets/icons/icons8_cash_register_128px_3.png"
+                            : "./assets/icons/icons8_cash_register_128px_4.png", style: { width: 80, height: 80, margin: "auto" } }),
+                React.createElement(core_1.Typography, { style: {
+                        color: props.WorkPeriod.isStarted
+                            ? "#fff"
+                            : props.Theme.theme === "light"
+                                ? "#0082A4"
+                                : "#000",
+                        marginTop: 3,
+                    }, variant: "h4" }, "POS")),
             React.createElement(core_1.Paper, { square: true, onClick: function () {
-                    history.push("/home/tickets");
+                    history.push("/tickets");
                 }, onMouseEnter: function () {
                     setTab3(true);
                 }, onMouseLeave: function () {
@@ -91,13 +99,13 @@ var index = function (props) {
                     height: 160,
                     textAlign: "center",
                     paddingTop: 20,
-                    marginLeft: 15
+                    marginLeft: 15,
                 } },
                 React.createElement("img", { src: "./assets/icons/invoice.png", style: { width: 60, height: 60, margin: "auto" } }),
                 React.createElement(core_1.Typography, { style: { color: "#fff", marginTop: 10 }, variant: "h4" }, "Tickets"))),
         React.createElement("div", { style: { display: "flex", marginTop: 10 } },
             React.createElement(core_1.Paper, { square: true, onClick: function () {
-                    history.push("/home/accounts");
+                    history.push("/accounts");
                 }, onMouseEnter: function () {
                     setTab4(true);
                 }, onMouseLeave: function () {
@@ -108,12 +116,12 @@ var index = function (props) {
                     cursor: "pointer",
                     height: 160,
                     textAlign: "center",
-                    paddingTop: 20
+                    paddingTop: 20,
                 } },
                 React.createElement("img", { src: "./assets/icons/combo_chart.png", style: { width: 60, height: 60, margin: "auto" } }),
                 React.createElement(core_1.Typography, { style: { color: "#fff", marginTop: 13 }, variant: "h4" }, "Accounts")),
             React.createElement(core_1.Paper, { onClick: function () {
-                    history.push("/home/warehouses");
+                    history.push("/warehouses");
                 }, square: true, onMouseEnter: function () {
                     setTab5(true);
                 }, onMouseLeave: function () {
@@ -125,12 +133,12 @@ var index = function (props) {
                     height: 160,
                     textAlign: "center",
                     paddingTop: 20,
-                    marginLeft: 15
+                    marginLeft: 15,
                 } },
                 React.createElement("img", { src: "./assets/icons/icons8_warehouse_240px.png", style: { width: 80, height: 80, margin: "auto" } }),
                 React.createElement(core_1.Typography, { style: { color: "#fff", marginTop: 3 }, variant: "h4" }, "Warehouses")),
             React.createElement(core_1.Paper, { square: true, onClick: function () {
-                    history.push("/home/departments");
+                    history.push("/departments");
                 }, onMouseEnter: function () {
                     setTab6(true);
                 }, onMouseLeave: function () {
@@ -142,13 +150,13 @@ var index = function (props) {
                     height: 160,
                     textAlign: "center",
                     paddingTop: 20,
-                    marginLeft: 15
+                    marginLeft: 15,
                 } },
                 React.createElement("img", { src: "./assets/icons/icons8_unit_240px.png", style: { width: 60, height: 60, margin: "auto" } }),
                 React.createElement(core_1.Typography, { style: { color: "#fff", marginTop: 10 }, variant: "h4" }, "Departments"))),
         React.createElement("div", { style: { display: "flex", marginTop: 10 } },
             React.createElement(core_1.Paper, { square: true, onClick: function () {
-                    history.push("/home/reports");
+                    history.push("/reports");
                 }, onMouseEnter: function () {
                     setTab7(true);
                 }, onMouseLeave: function () {
@@ -159,12 +167,12 @@ var index = function (props) {
                     cursor: "pointer",
                     height: 160,
                     textAlign: "center",
-                    paddingTop: 20
+                    paddingTop: 20,
                 } },
                 React.createElement("img", { src: "./assets/icons/account.png", style: { width: 60, height: 60, margin: "auto" } }),
                 React.createElement(core_1.Typography, { style: { color: "#fff", marginTop: 13 }, variant: "h4" }, "Reports")),
             React.createElement(core_1.Paper, { onClick: function () {
-                    history.push("/home/stores");
+                    history.push("/settings");
                 }, square: true, onMouseEnter: function () {
                     setTab8(true);
                 }, onMouseLeave: function () {
@@ -176,12 +184,17 @@ var index = function (props) {
                     height: 160,
                     textAlign: "center",
                     paddingTop: 20,
-                    marginLeft: 15
+                    marginLeft: 15,
                 } },
                 React.createElement("img", { src: "./assets/icons/icons8_settings_100px.png", style: { width: 60, height: 60, margin: "auto" } }),
                 React.createElement(core_1.Typography, { style: { color: "#fff", marginTop: 11 }, variant: "h4" }, "Settings")),
             React.createElement(core_1.Paper, { square: true, onClick: function () {
-                    history.push("/home/reports");
+                    props.dispatchEvent({
+                        type: "LOGOUT",
+                    });
+                    setTimeout(function () {
+                        history.push("/");
+                    }, 400);
                 }, onMouseEnter: function () {
                     setTab9(true);
                 }, onMouseLeave: function () {
@@ -193,12 +206,12 @@ var index = function (props) {
                     height: 160,
                     textAlign: "center",
                     paddingTop: 20,
-                    marginLeft: 15
+                    marginLeft: 15,
                 } },
                 React.createElement("img", { src: "./assets/icons/icons8_export_52px.png", style: { width: 60, height: 60, margin: "auto" } }),
                 React.createElement(core_1.Typography, { style: { color: "#fff", marginTop: 10 }, variant: "h4" }, "Logout"))),
         React.createElement("div", null,
-            React.createElement(Modal_1.default, { "aria-labelledby": "simple-modal-title", "aria-describedby": "simple-modal-description", open: open, className: classes.modal, onClose: handleClose },
+            React.createElement(Modal_1.default, { "aria-labelledby": "simple-modal-title", "aria-describedby": "simple-modal-description", open: open, className: classes.modal },
                 React.createElement(core_1.Paper, { style: { padding: 20 } },
                     React.createElement("div", null,
                         React.createElement(core_1.Typography, { variant: "h6" }, "Start work Period first")),
@@ -207,12 +220,13 @@ var index = function (props) {
 };
 function mapStateToProps(state) {
     return {
-        Theme: state.Theme
+        Theme: state.Theme,
+        WorkPeriod: state.WorkPeriod,
     };
 }
 var mapDispatchToProps = function (dispatch) {
     return {
-        dispatchEvent: function (data) { return dispatch(data); }
+        dispatchEvent: function (data) { return dispatch(data); },
     };
 };
 exports.default = react_redux_1.connect(mapStateToProps, mapDispatchToProps)(index);

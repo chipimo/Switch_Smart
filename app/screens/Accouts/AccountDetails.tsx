@@ -167,6 +167,7 @@ const AccountDetails = props => {
   const [state, setState] = React.useState(initialState);
   const [selectedId, setSelectedId] = React.useState();
   const [selected, setSelected] = React.useState();
+  const [startDate, setStartDate] = React.useState(new Date());
 
   const history = useHistory();
 
@@ -234,6 +235,7 @@ const AccountDetails = props => {
             </div>
             <ThemeProvider theme={darkTheme}>
               <div style={{ marginLeft: 40 }}>
+                {/* <DatePicker selected={startDate} onChange={date => setStartDate(date)} /> */}
                 <TextField
                   id="date"
                   fullWidth

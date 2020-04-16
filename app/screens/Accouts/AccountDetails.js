@@ -132,6 +132,7 @@ var AccountDetails = function (props) {
     var _d = React.useState(initialState), state = _d[0], setState = _d[1];
     var _e = React.useState(), selectedId = _e[0], setSelectedId = _e[1];
     var _f = React.useState(), selected = _f[0], setSelected = _f[1];
+    var _g = React.useState(new Date()), startDate = _g[0], setStartDate = _g[1];
     var history = react_router_dom_1.useHistory();
     var handleChange = function (event) {
         setAge(event.target.value);

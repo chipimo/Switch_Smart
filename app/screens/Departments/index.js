@@ -24,11 +24,11 @@ var useStyles = styles_1.makeStyles(function (theme) { return ({
     modal: {
         display: "flex",
         alignItems: "center",
-        justifyContent: "center"
-    }
+        justifyContent: "center",
+    },
 }); });
 var customStyles = {
-    menu: function (provided, state) { return (__assign({}, provided, { borderBottom: "1px dotted pink", fontSize: 22 })); }
+    menu: function (provided, state) { return (__assign({}, provided, { borderBottom: "1px dotted pink", fontSize: 22 })); },
 };
 var index = function (props) {
     var history = react_router_dom_1.useHistory();
@@ -36,16 +36,17 @@ var index = function (props) {
     var _a = React.useState(true), isLoading = _a[0], setisLoading = _a[1];
     var _b = React.useState(true), SelectDep = _b[0], setSelectDep = _b[1];
     var _c = React.useState(false), IsSettingDb = _c[0], setIsSettingDb = _c[1];
-    var _d = React.useState([]), TempData = _d[0], setTempData = _d[1];
-    var _e = React.useState(null), DepSelected = _e[0], setDepSelected = _e[1];
-    var _f = React.useState(null), DepName = _f[0], setDepName = _f[1];
-    var _g = React.useState(false), open = _g[0], setOpen = _g[1];
-    var _h = React.useState({
-        depName: ""
-    }), values = _h[0], setValues = _h[1];
+    var _d = React.useState(false), IsnewSetup = _d[0], setIsnewSetup = _d[1];
+    var _e = React.useState([]), TempData = _e[0], setTempData = _e[1];
+    var _f = React.useState(null), DepSelected = _f[0], setDepSelected = _f[1];
+    var _g = React.useState(null), DepName = _g[0], setDepName = _g[1];
+    var _h = React.useState(false), open = _h[0], setOpen = _h[1];
     var _j = React.useState({
-        nameError: ""
-    }), errors = _j[0], setErrors = _j[1];
+        depName: "",
+    }), values = _j[0], setValues = _j[1];
+    var _k = React.useState({
+        nameError: "",
+    }), errors = _k[0], setErrors = _k[1];
     var handleOpen = function () {
         setOpen(true);
     };
@@ -64,12 +65,11 @@ var index = function (props) {
                 setSelectDep(true);
                 var data_1 = [];
                 reciveCallback.deps.map(function (items) {
-                    console.log(items);
                     data_1.push({
                         value: items.dep,
                         label: items.dep,
                         color: "#3b3b3",
-                        data: items
+                        data: items,
                     });
                 });
                 setTempData(data_1);
@@ -81,7 +81,6 @@ var index = function (props) {
         });
     };
     var handleTextChange = function (event, prop) {
-        // console.log(event.target.value);
         var _a;
         setValues(__assign({}, values, (_a = {}, _a[prop] = event.target.value, _a)));
         setErrors(__assign({}, errors, { nameError: "" }));
@@ -96,15 +95,47 @@ var index = function (props) {
                 type: "set",
                 data: {
                     department: values.depName,
-                    id: "auto"
+                    id: "auto",
+                },
+            }, function (reciveCallback) {
+                if (reciveCallback.isSet) {
+                    props.dispatchEvent({
+                        type: "SETDEP",
+                        dep: reciveCallback,
+                    });
+                    props.dispatchEvent({
+                        type: "SETCONFIG",
+                        isSet: true,
+                        config: reciveCallback.initalData,
+                    });
                 }
-            }, function (reciveCallback) { });
+            });
         }
+    };
+    var handleDepSelected = function () {
+        setisLoading(true);
+        setSelectDep(false);
+        dataBase_1.default.HandleDepartments({
+            type: "get",
+            data: {
+                DepSelected: DepSelected,
+            },
+        }, function (reciveCallback) { });
+        // props.dispatchEvent({
+        //   type: "SETDEPARTMENT",
+        //   depName: DepName,
+        //   date: "",
+        //   allDeps: DepSelected,
+        // });
+        // setisLoading(true);
+        // setTimeout(() => {
+        //   history.push("/home/selection");
+        // }, 1000);
     };
     return (React.createElement("div", { style: {
             width: "100%",
             textAlign: "center",
-            justifyContent: "center"
+            justifyContent: "center",
         } },
         React.createElement("div", { style: { paddingTop: 100 } },
             React.createElement(core_1.Typography, { variant: "h4" }, "Welcome To Switch Smart"),
@@ -118,35 +149,30 @@ var index = function (props) {
                     React.createElement("div", null,
                         React.createElement(core_1.Typography, null, "No Department found"),
                         React.createElement("div", { style: { marginTop: 20 } },
-                            React.createElement(core_1.Button, { onClick: handleOpen, variant: "contained" }, "Creat new Department"))))) : (React.createElement("div", null,
-                    React.createElement(react_select_1.default, { styles: customStyles, 
-                        // onChange={data => {
-                        //   console.log(data);
-                        //   setDepName(data.label);
-                        //   setDepSelected(data);
-                        // }}
-                        options: TempData }),
+                            React.createElement(core_1.Button, { onClick: handleOpen, variant: "contained", color: "primary" }, "Creat new Department"))))) : (React.createElement("div", null,
+                    React.createElement(react_select_1.default, { styles: customStyles, onChange: function (data) {
+                            setDepName(data.label);
+                            setDepSelected(data);
+                        }, options: TempData }),
                     React.createElement("div", { style: { marginTop: 20 } },
-                        React.createElement(core_1.Button, { disabled: DepSelected ? false : true, 
-                            // onClick={handleDepSelected}
-                            variant: "contained" }, "Set The Department Selected")))))))),
+                        React.createElement(core_1.Button, { disabled: DepSelected ? false : true, onClick: handleDepSelected, variant: "contained", color: "primary" }, "Set The Department Selected")))))))),
         React.createElement(Modal_1.default, { "aria-labelledby": "simple-modal-title", "aria-describedby": "simple-modal-description", open: open, className: classes.modal },
             React.createElement(core_1.Paper, { style: {
                     padding: 20,
                     height: "40vh",
-                    width: "46%",
-                    paddingTop: 40,
+                    width: "50%",
+                    paddingTop: 20,
                     textAlign: "center",
-                    justifyContent: "center"
+                    justifyContent: "center",
                 } },
                 React.createElement("div", null,
                     React.createElement(core_1.Typography, { variant: "h6" }, "Start A New Department")),
-                React.createElement("div", { style: { marginTop: 40 } },
+                React.createElement("div", { style: { marginTop: 20 } },
                     React.createElement(core_1.TextField, { autoComplete: "depName", name: "depName", variant: "outlined", required: true, fullWidth: true, value: values.depName, onChange: function (e) { return handleTextChange(e, "depName"); }, id: "depName", label: "Department Name", autoFocus: true, error: errors.nameError === "" ? false : true, helperText: errors.nameError, disabled: IsSettingDb ? true : false })),
                 React.createElement("div", { style: { marginTop: 20 } },
                     React.createElement(core_1.Button, { disabled: IsSettingDb ? true : false, onClick: OnSubmitForm, variant: "contained", color: "primary", style: { width: 200, marginRight: 10 } }, "Start Department"),
                     React.createElement(core_1.Button, { disabled: IsSettingDb ? true : false, onClick: handleClose, variant: "contained", color: "secondary", style: { width: 200, marginLeft: 10 } }, "Cancel"),
-                    IsSettingDb ? (React.createElement("div", { style: { width: "30%", paddingTop: 40, margin: "auto" } },
+                    IsSettingDb ? (React.createElement("div", { style: { width: "30%", paddingTop: 15, margin: "auto" } },
                         React.createElement(LinearProgress_1.default, { color: "secondary" }),
                         React.createElement("div", null,
                             React.createElement(core_1.Typography, { variant: "overline" }, "Please wait...")))) : null)))));
@@ -155,12 +181,12 @@ function mapStateToProps(state) {
     return {
         Theme: state.Theme,
         SocketConn: state.SocketConn,
-        Config: state.Config
+        Config: state.Config,
     };
 }
 var mapDispatchToProps = function (dispatch) {
     return {
-        dispatchEvent: function (data) { return dispatch(data); }
+        dispatchEvent: function (data) { return dispatch(data); },
     };
 };
 exports.default = react_redux_1.connect(mapStateToProps, mapDispatchToProps)(index);

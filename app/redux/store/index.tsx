@@ -10,6 +10,13 @@ import Customers from "../reducers/customers/Customers";
 import TicketToPrint from "../reducers/printer/printHistoryTicket";
 import TicketOut from "../reducers/tickets/ticketOut";
 import Tax from "../reducers/tax/tax";
+import WorkPeriod from "../reducers/WorkPeriod";
+import WorkPeriodList from "../reducers/WorkPeriod/WorkPeriodList";
+import User from "../reducers/Users";
+import Dep from "../reducers/departments/department";
+import Notify from "../reducers/Notifications";
+import Model from "../reducers/Model";
+import SettingViews from "../reducers/SettingViews";
 
 const AllReducers = combineReducers({
   Theme: Theme,
@@ -21,6 +28,13 @@ const AllReducers = combineReducers({
   TicketToPrint: TicketToPrint,
   TicketOut: TicketOut,
   Tax: Tax,
+  WorkPeriod: WorkPeriod,
+  WorkPeriodList: WorkPeriodList,
+  User: User,
+  Dep: Dep,
+  Notify: Notify,
+  Model: Model,
+  SettingViews: SettingViews,
 });
 
 const store = createStore(AllReducers, applyMiddleware(thunk));

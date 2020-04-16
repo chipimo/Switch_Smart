@@ -6,7 +6,7 @@ import {
   Divider,
   Button,
   Paper,
-  TextField
+  TextField,
 } from "@material-ui/core";
 import { ThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 import Select from "react-select";
@@ -15,29 +15,30 @@ import Modal from "@material-ui/core/Modal";
 import { makeStyles } from "@material-ui/core/styles";
 import appDb from "../../redux/dataBase";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   modal: {
     display: "flex",
     alignItems: "center",
-    justifyContent: "center"
-  }
+    justifyContent: "center",
+  },
 }));
 
 const customStyles = {
   menu: (provided, state) => ({
     ...provided,
     borderBottom: "1px dotted pink",
-    fontSize: 22
-  })
+    fontSize: 22,
+  }),
 };
 
-const index = props => {
+const index = (props) => {
   const history = useHistory();
   const classes = useStyles();
 
   const [isLoading, setisLoading] = React.useState(true);
   const [SelectDep, setSelectDep] = React.useState(true);
   const [IsSettingDb, setIsSettingDb] = React.useState(false);
+  const [IsnewSetup, setIsnewSetup] = React.useState(false);
   const [TempData, setTempData] = React.useState([]);
 
   const [DepSelected, setDepSelected] = React.useState(null);
@@ -45,10 +46,10 @@ const index = props => {
 
   const [open, setOpen] = React.useState(false);
   const [values, setValues] = React.useState({
-    depName: ""
+    depName: "",
   });
   const [errors, setErrors] = React.useState({
-    nameError: ""
+    nameError: "",
   });
 
   const handleOpen = () => {
@@ -66,21 +67,19 @@ const index = props => {
   }, []);
 
   const getData = () => {
-    appDb.HandleDepartments({ type: "check" }, reciveCallback => {
+    appDb.HandleDepartments({ type: "check" }, (reciveCallback) => {
       if (reciveCallback.exist) {
         setisLoading(false);
         setSelectDep(true);
 
         let data = [];
 
-        reciveCallback.deps.map(items => {
-          console.log(items);
-          
+        reciveCallback.deps.map((items) => {
           data.push({
             value: items.dep,
             label: items.dep,
             color: "#3b3b3",
-            data: items
+            data: items,
           });
         });
 
@@ -93,8 +92,6 @@ const index = props => {
   };
 
   const handleTextChange = (event, prop) => {
-    // console.log(event.target.value);
-
     setValues({ ...values, [prop]: event.target.value });
     setErrors({ ...errors, nameError: "" });
   };
@@ -109,12 +106,50 @@ const index = props => {
           type: "set",
           data: {
             department: values.depName,
-            id: "auto"
-          }
+            id: "auto",
+          },
         },
-        reciveCallback => {}
+        (reciveCallback) => {
+          if (reciveCallback.isSet) {
+            props.dispatchEvent({
+              type: "SETDEP",
+              dep: reciveCallback,
+            });
+
+            props.dispatchEvent({
+              type: "SETCONFIG",
+              isSet: true,
+              config: reciveCallback.initalData,
+            });
+          }
+        }
       );
     }
+  };
+
+  const handleDepSelected = () => {
+    setisLoading(true);
+    setSelectDep(false);
+
+    appDb.HandleDepartments(
+      {
+        type: "get",
+        data: {
+          DepSelected,
+        },
+      },
+      (reciveCallback) => {}
+    );
+    // props.dispatchEvent({
+    //   type: "SETDEPARTMENT",
+    //   depName: DepName,
+    //   date: "",
+    //   allDeps: DepSelected,
+    // });
+    // setisLoading(true);
+    // setTimeout(() => {
+    //   history.push("/home/selection");
+    // }, 1000);
   };
 
   return (
@@ -122,7 +157,7 @@ const index = props => {
       style={{
         width: "100%",
         textAlign: "center",
-        justifyContent: "center"
+        justifyContent: "center",
       }}
     >
       <div style={{ paddingTop: 100 }}>
@@ -146,7 +181,11 @@ const index = props => {
                     <Typography>No Department found</Typography>
 
                     <div style={{ marginTop: 20 }}>
-                      <Button onClick={handleOpen} variant="contained">
+                      <Button
+                        onClick={handleOpen}
+                        variant="contained"
+                        color="primary"
+                      >
                         Creat new Department
                       </Button>
                     </div>
@@ -156,18 +195,18 @@ const index = props => {
                 <div>
                   <Select
                     styles={customStyles}
-                    // onChange={data => {
-                    //   console.log(data);
-                    //   setDepName(data.label);
-                    //   setDepSelected(data);
-                    // }}
+                    onChange={(data) => {
+                      setDepName(data.label);
+                      setDepSelected(data);
+                    }}
                     options={TempData}
                   />
                   <div style={{ marginTop: 20 }}>
                     <Button
                       disabled={DepSelected ? false : true}
-                      // onClick={handleDepSelected}
+                      onClick={handleDepSelected}
                       variant="contained"
+                      color="primary"
                     >
                       Set The Department Selected
                     </Button>
@@ -190,17 +229,17 @@ const index = props => {
           style={{
             padding: 20,
             height: "40vh",
-            width: "46%",
-            paddingTop: 40,
+            width: "50%",
+            paddingTop: 20,
             textAlign: "center",
-            justifyContent: "center"
+            justifyContent: "center",
           }}
         >
           <div>
             <Typography variant="h6">Start A New Department</Typography>
           </div>
 
-          <div style={{ marginTop: 40 }}>
+          <div style={{ marginTop: 20 }}>
             <TextField
               autoComplete="depName"
               name="depName"
@@ -208,7 +247,7 @@ const index = props => {
               required
               fullWidth
               value={values.depName}
-              onChange={e => handleTextChange(e, "depName")}
+              onChange={(e) => handleTextChange(e, "depName")}
               id="depName"
               label="Department Name"
               autoFocus
@@ -239,7 +278,7 @@ const index = props => {
             </Button>
 
             {IsSettingDb ? (
-              <div style={{ width: "30%", paddingTop: 40, margin: "auto" }}>
+              <div style={{ width: "30%", paddingTop: 15, margin: "auto" }}>
                 <LinearProgress color="secondary" />
                 <div>
                   <Typography variant="overline">Please wait...</Typography>
@@ -257,14 +296,15 @@ function mapStateToProps(state) {
   return {
     Theme: state.Theme,
     SocketConn: state.SocketConn,
-    Config: state.Config
+    Config: state.Config,
   };
 }
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
-    dispatchEvent: data => dispatch(data)
+    dispatchEvent: (data) => dispatch(data),
   };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(index);
+ 

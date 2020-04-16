@@ -42,22 +42,19 @@ function example(data) {
                 .tableCustom([
                 { text: "JR Liberty LTD", align: "LEFT", width: 0.4 },
                 { text: " ", align: "CENTER", width: 0.19 },
-                { text: "TPIN: 1003938315", align: "RIGHT", width: 0.44 }
+                { text: "TPIN: 1003938315", align: "RIGHT", width: 0.44 },
             ])
                 .tableCustom([
                 {
                     text: "Date: " + moment().format("DD-MMM-YYYY"),
                     align: "LEFT",
-                    width: 0.44
+                    width: 0.44,
                 },
                 { text: " ", align: "CENTER", width: 0.2 },
-                { text: "Time: " + time, align: "RIGHT", width: 0.4 }
-                // { text: "Time: 07:16", align: "RIGHT", width: 1 },
-                // { text: "Date: 04-Feb-20", align: "LEFT", width: 1 },
-                // { text: "Casher : Melvin", align: "LEFT", width: 1 }
+                { text: "Time: " + time, align: "RIGHT", width: 0.4 },
             ])
                 .tableCustom([
-                { text: "Casher : " + data.user, align: "LEFT", width: 1 }
+                { text: "Casher : " + data.user, align: "LEFT", width: 1 },
             ])
                 .text(" ")
                 .text("---------------------------------------------");
@@ -66,14 +63,14 @@ function example(data) {
                     {
                         text: element.ItemName + " * " + element.Qty,
                         align: "LEFT",
-                        width: 0.49
+                        width: 0.49,
                     },
                     { text: " ", align: "CENTER", width: 0.16 },
                     {
                         text: formatCurrency(element.Price, opts),
                         align: "RIGHT",
-                        width: 0.35
-                    }
+                        width: 0.35,
+                    },
                 ]);
             });
             if (data.isTaxInvoice) {
@@ -85,8 +82,8 @@ function example(data) {
                     {
                         text: "%" + data.taxRate + " Tax Amount: " + data.taxRate / 100,
                         align: "RIGHT",
-                        width: 1
-                    }
+                        width: 1,
+                    },
                 ])
                     .tableCustom([
                     { text: " ", align: "LEFT", width: 0.49 },
@@ -94,8 +91,8 @@ function example(data) {
                     {
                         text: "Taxable Amount: " + formatCurrency(data.totalTax, opts),
                         align: "RIGHT",
-                        width: 1
-                    }
+                        width: 1,
+                    },
                 ]);
             }
             printer
@@ -107,8 +104,8 @@ function example(data) {
                 {
                     text: formatCurrency(data.GrandTotal),
                     align: "RIGHT",
-                    width: 0.33
-                }
+                    width: 0.33,
+                },
             ])
                 .tableCustom([
                 { text: "Change:", align: "LEFT", width: 0.44 },
@@ -116,8 +113,8 @@ function example(data) {
                 {
                     text: formatCurrency(data.ChangeDue),
                     align: "RIGHT",
-                    width: 0.33
-                }
+                    width: 0.33,
+                },
             ])
                 .tableCustom([
                 { text: "Balance:", align: "LEFT", width: 0.44 },
@@ -125,8 +122,8 @@ function example(data) {
                 {
                     text: formatCurrency(data.Balance),
                     align: "RIGHT",
-                    width: 0.33
-                }
+                    width: 0.33,
+                },
             ])
                 .tableCustom([
                 { text: "" + data.paymentType, align: "LEFT", width: 0.44 },
@@ -134,8 +131,8 @@ function example(data) {
                 {
                     text: formatCurrency(data.AmountPaid),
                     align: "RIGHT",
-                    width: 0.33
-                }
+                    width: 0.33,
+                },
             ])
                 .text("================================================")
                 .size(2, 2)
@@ -158,7 +155,7 @@ function screenLoader() {
         fullscreen: true,
         transparent: true,
         resizable: false,
-        icon: path.join(__dirname, "assets/img/icons/logo.png")
+        icon: path.join(__dirname, "assets/img/icons/logo.png"),
     });
     win.on("close", function () {
         win = null;
@@ -179,14 +176,14 @@ function createWindow() {
         transparent: true,
         resizable: false,
         webPreferences: {
-            nodeIntegration: true
+            nodeIntegration: true,
         },
-        icon: path.join(__dirname, "assets/img/icons/logo.png")
+        icon: path.join(__dirname, "assets/img/icons/logo.png"),
     });
     mainWindow.loadURL(url.format({
         pathname: path.join(__dirname, app_files),
         protocol: "file:",
-        slashes: false
+        slashes: false,
     }));
     mainWindow.webContents.on("new-window", function (event, url, frameName, disposition, options, additionalFeatures) {
         if (frameName === "modal") {
@@ -196,7 +193,7 @@ function createWindow() {
                 modal: true,
                 parent: mainWindow,
                 width: 600,
-                height: 500
+                height: 500,
             });
             event.newGuest = new BrowserWindow(options);
         }
@@ -214,6 +211,31 @@ function createWindow() {
     mainWindow.on("closed", function () {
         mainWindow = null;
     });
+    mainWindow.webContents.session.on("will-download", function (event, item, webContents) {
+        // Set the save path, making Electron not to prompt a save dialog.
+        item.setSavePath("/tmp/save.pdf");
+        item.on("updated", function (event, state) {
+            if (state === "interrupted") {
+                console.log("Download is interrupted but can be resumed");
+            }
+            else if (state === "progressing") {
+                if (item.isPaused()) {
+                    console.log("Download is paused");
+                }
+                else {
+                    console.log("Received bytes: " + item.getReceivedBytes());
+                }
+            }
+        });
+        item.once("done", function (event, state) {
+            if (state === "completed") {
+                console.log("Download successfully");
+            }
+            else {
+                console.log("Download failed: " + state);
+            }
+        });
+    });
 }
 // IPC Render
 ipcMain.on("do_print_receipt", function (event, arg) {
@@ -224,21 +246,28 @@ ipcMain.on("do_print_receipt", function (event, arg) {
 ipcMain.on("show_notification", function (event, arg) {
     // console.log(arg);
     mainRender = event;
-    var options = {
+    var options1 = {
         type: arg.type,
         buttons: ["Cancel", "Yes, please", "No, thanks"],
         defaultId: 2,
         title: arg.data.title,
         message: arg.message,
-        detail: arg.data.detail
+        detail: arg.data.detail,
+    };
+    var options2 = {
+        type: arg.type,
+        defaultId: 2,
+        title: arg.data.title,
+        message: arg.message,
+        detail: arg.data.detail,
     };
     dialog
-        .showMessageBox(mainWindow, options)
+        .showMessageBox(mainWindow, arg.state === "msgBox" ? options2 : options1)
         .then(function (result) {
         if (result.response === 1) {
             event.reply("notification_reponse", {
                 delete: true,
-                deleteId: arg.data.id
+                deleteId: arg.data.id,
             });
         }
         else {

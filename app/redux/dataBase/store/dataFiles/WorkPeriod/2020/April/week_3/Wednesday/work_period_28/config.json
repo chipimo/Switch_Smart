@@ -1,0 +1,30 @@
+{
+  "data": [
+    {
+      "id": "2d037915-9dff-406b-8422-9a57a9a31c84",
+      "dateStarted": "04/15/2020",
+      "dateStartedString": "Wednesday, April 15, 2020 6:24 AM",
+      "dateEnded": "04/15/2020",
+      "dateEndedString": "Wednesday, April 15, 2020 6:24 AM",
+      "time": "6:24 AM",
+      "timeEnded": "6:24 AM",
+      "fileName": "work_period_28",
+      "date": "2020-04-15T06:24:14+02:00",
+      "note": "",
+      "ticketsId": [],
+      "user": "Adminstartor",
+      "department": "Arcades Mall",
+      "departmentInfo": {
+        "id": "4ade9571-6ab6-4150-83f3-e4b5f9574a78",
+        "dep": "Arcades Mall",
+        "file": "Arcades"
+      },
+      "workedFor": "  0 minutes",
+      "count": 28,
+      "year": "2020",
+      "month": "April",
+      "week": "week_3",
+      "day": "Wednesday"
+    }
+  ]
+}

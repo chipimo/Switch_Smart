@@ -1,20 +1,34 @@
-import React= require('react')
-import { connect } from 'react-redux'
+const Dep = (
+  state = {
+    isSet: false,
+    dep: null,
+    departmentInfo:{},
+  },
+  action
+) => {
+  switch (action.type) {
+    case "SETDEP":
+      state = {
+        ...state,
+        isSet: true,
+        dep: action.dep.initalData.dep.config.departments.dep,
+        departmentInfo: action.dep.initalData.dep.config.departments,
+      };
+      break;
+    case "RESTDEP":
+      state = {
+        ...state,
+        isSet: false,
+        dep: null,
+        departmentInfo:{},
+      };
+      break;
 
-export const department = () => {
-    return (
-        <div>
-            
-        </div>
-    )
-}
+    default:
+      return state;
+  }
 
-const mapStateToProps = (state) => ({
-    
-})
+  return state;
+};
 
-const mapDispatchToProps = {
-    
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(department)
+export default Dep;

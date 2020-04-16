@@ -1,6 +1,6 @@
 import React = require("react");
 import { connect } from "react-redux";
-import { Button, Typography, Paper, AppBar } from "@material-ui/core";
+import {  Paper, AppBar } from "@material-ui/core";
 import SideBarTools from "./SideBarTools";
 import TicketView from "./TicketView";
 import ProductView from "./ProductView";
