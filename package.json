@@ -44,7 +44,7 @@
     "mui-datatables": "^2.14.0",
     "namor": "^2.0.2",
     "node-abi": "^2.15.0",
-    "node-notifier": "^6.0.0",
+    "node-notifier": "^8.0.1",
     "notistack": "^0.9.7",
     "numbro": "^2.1.2",
     "react": "^16.12.0",
