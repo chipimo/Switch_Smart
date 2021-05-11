@@ -36,7 +36,7 @@
     "escpos-usb": "^3.0.0-alpha.2",
     "format-currency": "^1.0.0",
     "grommet": "^2.10.0",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.21",
     "lowdb": "^1.0.0",
     "match-sorter": "^4.0.2",
     "material-table": "^1.57.2",
